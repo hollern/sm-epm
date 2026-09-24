@@ -1,0 +1,37 @@
+[project]
+name = "sm-epm"
+version = "0.0.1"
+description = "Automations and analysis against SurveyMonkey's EPM systems (Anaplan + Pigment)."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "chollern", email = "chollern@surveymonkey.com" }]
+
+dependencies = [
+    "anaplan-sdk>=0.5.20",
+    "anthropic>=1.8.0",
+    "openai>=3.19.2",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.6",
+    "pigment",
+    "python-dotenv>=1.2.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.uv.sources]
+pigment = { path = "../pigment-epm", editable = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sm_epm"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra"

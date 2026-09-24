@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /Users/chollern/PycharmProjects/sm-epm 2>&1; echo \"---\"; ls /Users/chollern/PycharmProjects 2>&1)",
+      "Bash(/Users/chollern/PycharmProjects/sm-epm/.venv/bin/python --version)",
+      "Bash(uv --version)",
+      "Bash(uv run *)",
+      "WebFetch(domain:kb.pigment.com)"
+    ]
+  }
+}
