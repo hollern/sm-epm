@@ -4,7 +4,7 @@ version = "0.0.1"
 description = "Automations and analysis against SurveyMonkey's EPM systems (Anaplan + Pigment)."
 readme = "README.md"
 requires-python = ">=3.11"
-authors = [{ name = "chollern", email = "chollern@surveymonkey.com" }]
+authors = [{ name = "chollern", email = "conorhollern@gmail.com" }]
 
 dependencies = [
     "anaplan-sdk>=0.5.20",
