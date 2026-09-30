@@ -58,4 +58,4 @@ Anaplan's `s.Vendor.NetSuite Created Vendor` is a combined GL Account + Vendor d
 2. **Vendor ID:** confirm that the NetSuite vendor ID is the part of the code after the `|` (the other candidate is the `#784`-style name). Pigment's `Vendor (NetSuite)` dimension currently has **0 items**, so the vendor load will fail to match rows unless the import config creates items, or that dimension gets loaded first.
 3. **Replace or append:** check whether each Pigment import config replaces or appends. If it appends, re-running the script will double the data.
 4. **Formats:** confirm that the import configs expect a comma delimiter, ISO dates in `Load Date`, and the column names above. The client can't read import config details, so check them in the Pigment UI.
-5. **Pigment key permissions:** confirm the Pigment API key has import permission. Only metadata and export access have been verified.
+5. **Pigment key permissions:** import access was verified on 2026-09-30 through `pl_account_values_load`. It still needs checking against these specific import configs.
