@@ -10,7 +10,6 @@ from __future__ import annotations
 import csv
 import io
 import re
-import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import date
@@ -18,9 +17,10 @@ from datetime import date
 from sm_epm.lib.anaplan.client import client_from_env as anaplan_client_from_env
 from sm_epm.lib.anaplan.errors import anaplan_errors
 from sm_epm.lib.env import PROJECT_ROOT
-from sm_epm.lib.errors import DataFormatError, OperationFailedError, OperationTimeoutError
+from sm_epm.lib.errors import DataFormatError
 from sm_epm.lib.pigment.client import client_from_env as pigment_client_from_env
 from sm_epm.lib.pigment.errors import pigment_errors
+from sm_epm.lib.pigment.imports import to_csv, wait_for_import
 
 OUTPUT_DIR = PROJECT_ROOT / 'output'
 MONTH_HEADER = re.compile(r'^[A-Z][a-z]{2} \d{2}$')
@@ -126,30 +126,6 @@ def transform(load: Load, raw: str, load_date: str) -> list[list[str]]:
             if value.strip() and float(value) != 0:
                 rows.append([load_date, SUBSIDIARY, *keys, month, value])
     return rows
-
-
-def to_csv(header: Sequence[str], rows: Sequence[Sequence[str]]) -> str:
-    buf = io.StringIO()
-    writer = csv.writer(buf, lineterminator='\n')
-    writer.writerow(header)
-    writer.writerows(rows)
-    return buf.getvalue()
-
-
-def wait_for_import(pigment, import_id: str, poll_seconds: float = 5, timeout_seconds: float = 600) -> dict:
-    deadline = time.monotonic() + timeout_seconds
-    while True:
-        with pigment_errors:
-            status = pigment.get_import_status(import_id)
-        if status['importStatus'] == 'Failed':
-            raise OperationFailedError(f'import {import_id} failed', service='pigment', payload=status)
-        if status['importStatus'] != 'InProgress':
-            return status
-        if time.monotonic() > deadline:
-            raise OperationTimeoutError(
-                f'import {import_id} still in progress after {timeout_seconds}s', service='pigment', payload=status
-            )
-        time.sleep(poll_seconds)
 
 
 def main(load: bool = False) -> None:
